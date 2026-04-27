@@ -1,14 +1,16 @@
 from fastapi import FastAPI
+from app.core.config import settings
 
 app = FastAPI(
-    title="Fraud Detection API",
-    description="This is an API for credit card fraud detections"
+    title=settings.app_name,
+    description="This is an API for credit card fraud detections",
+    version=settings.app_version
 )
 
 
 @app.get('/')
 def root():
-    return {'message' : 'launch!'}
+    return {'message' : f'{settings.app_name} is running!'}
 
 @app.get('/health')
 def health_check():
