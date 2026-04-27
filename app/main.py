@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+
+from app.api.transactions import router as transactions_router
 from app.core.config import settings
 from app.db.base import Base
 from app.db.session import engine
@@ -12,6 +14,8 @@ app = FastAPI(
     description="This is an API for credit card fraud detections",
     version=settings.app_version
 )
+
+app.include_router(transactions_router)
 
 
 @app.get('/')
