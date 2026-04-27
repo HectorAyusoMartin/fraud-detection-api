@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     debug: bool
     host: str
     port: int
+    database_url: str
 
 
 settings = Settings()
