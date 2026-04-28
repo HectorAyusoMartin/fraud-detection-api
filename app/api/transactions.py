@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 from app.db.dependencies import get_db
 from app.models.transaction import Transaction
 from app.schemas.transaction import TransactionCreate, TransactionResponse
+from app.core.security import get_current_user
 
-router = APIRouter(prefix="/transactions",tags=["transactions"])
+router = APIRouter(prefix="/transactions",tags=["transactions"], dependencies=[Depends(get_current_user)])
 
 @router.post("/")
 def create_transaction(payload: TransactionCreate ,db: Session = Depends(get_db)):
