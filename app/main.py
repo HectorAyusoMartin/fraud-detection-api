@@ -5,6 +5,7 @@ from app.core.config import settings
 from app.db.base import Base
 from app.db.session import engine
 from app.models.transaction import Transaction
+from app.api.auth import router as auth_router
 
 
 Base.metadata.create_all(bind=engine)
@@ -16,6 +17,7 @@ app = FastAPI(
 )
 
 app.include_router(transactions_router)
+app.include_router(auth_router)
 
 
 @app.get('/')
