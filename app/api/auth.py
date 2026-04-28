@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
 from app.core.config import settings
-from app.core.security import create_access_token
+from app.core.security import create_access_token, get_current_user
 from app.schemas.auth import LoginRequest, TokenResponse
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -20,3 +20,7 @@ def login(payload : LoginRequest):
         "access_token" : token,
         "token_type" : "bearer",
     }
+
+@router.get("/me")
+def get_me(current_user : str = Depends(get_current_user)):
+    return {"username" : current_user}

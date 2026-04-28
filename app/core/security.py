@@ -1,6 +1,10 @@
 from datetime import datetime , timedelta, timezone
-from jose import jwt 
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from jose import jwt , JWTError
 from app.core.config import settings
+
+bearer_scheme = HTTPBearer()
 
 def create_access_token(data : dict) -> str:
 
@@ -19,3 +23,33 @@ def create_access_token(data : dict) -> str:
     )
 
     return encoded_jwt
+
+def get_current_user(
+        credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+) -> str: 
+    token = credentials.credentials
+
+    
+    try:
+        payload = jwt.decode(
+            token,
+            settings.secret_key,
+            algorithms=[settings.algorithm],
+
+        )
+
+        username = payload.get("sub")
+
+        if username is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid authentication token",
+            )
+        
+        return username
+    
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication token"
+        )
