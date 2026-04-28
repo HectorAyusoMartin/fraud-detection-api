@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db.dependencies import get_db
 from app.models.transaction import Transaction
-from app.schemas.transaction import TransactionCreate
+from app.schemas.transaction import TransactionCreate, TransactionResponse
 
 router = APIRouter(prefix="/transactions",tags=["transactions"])
 
@@ -29,8 +29,6 @@ def create_transaction(payload: TransactionCreate ,db: Session = Depends(get_db)
         "created_at":transaction.created_at,
     }
 
-@router.get("/")
+@router.get("/", response_model=list[TransactionResponse])
 def get_transactions(db:Session = Depends(get_db)):
-    transactions = db.query(Transaction).all()
-
-    return transactions
+    return db.query(Transaction).all()
