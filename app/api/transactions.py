@@ -28,3 +28,9 @@ def create_transaction(payload: TransactionCreate ,db: Session = Depends(get_db)
         "prediction":transaction.prediction,
         "created_at":transaction.created_at,
     }
+
+@router.get("/")
+def get_transactions(db:Session = Depends(get_db)):
+    transactions = db.query(Transaction).all()
+
+    return transactions
