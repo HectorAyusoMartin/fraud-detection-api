@@ -10,6 +10,13 @@ class Settings(BaseSettings):
     host: str
     port: int
     database_url: str
+    
+    auth_username: str
+    auth_password: str
+    secret_key : str
+    algorithm : str
+    acces_token_expire_minutes : int
+    
 
 
 settings = Settings()
