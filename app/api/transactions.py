@@ -44,3 +44,16 @@ def get_transaction_by_id(transaction_id: int, db : Session = Depends(get_db)):
             detail="Transaction not found"
         )
     return transaction
+
+@router.delete("/{transaction_id}")
+def delete_transaction(transaction_id: int, db : Session = Depends(get_db)):
+    transaction = db.get(Transaction, transaction_id)
+
+    if transaction is None:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    
+    db.delete(transaction)
+    db.commit()
+
+    return {"message":"Transaction deleted sucessfully"}
+                       
