@@ -3,16 +3,17 @@ from sqlalchemy.orm import Session
 
 from app.db.dependencies import get_db
 from app.models.transaction import Transaction
+from app.schemas.transaction import TransactionCreate
 
 router = APIRouter(prefix="/transactions",tags=["transactions"])
 
 @router.post("/")
-def create_transaction(db: Session = Depends(get_db)):
+def create_transaction(payload: TransactionCreate ,db: Session = Depends(get_db)):
     
     transaction = Transaction(
-        amount=120.50,
-        fraud_probability=0.87,
-        prediction="fraud"
+        amount=payload.amount,
+        fraud_probability=payload.fraud_probability,
+        prediction=payload.prediction,
     )
 
     db.add(transaction)
