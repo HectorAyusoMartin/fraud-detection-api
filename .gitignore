@@ -38,3 +38,7 @@ htmlcov/
 
 # Ruff / cache
 .ruff_cache/
+
+.virtual_documents/
+
+anaconda_projects/
